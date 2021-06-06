@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BMI CALCULATOR</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="bmi.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu"
+      rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="cardcont top">
+        <div class="card male">
+          <p>MALE</p>
+          <img src="https://image.flaticon.com/icons/svg/291/291208.svg" />
+        </div>
+        <div class="card female">
+          <p>FEMALE</p>
+          <img src="https://image.flaticon.com/icons/svg/291/291209.svg" />
+        </div>
+      </div>
+      <div class="cardcont">
+        <div class="card1">
+          <p>HEIGHT</p><br>
+          <p><span class="number" id="height" >155</span>cm</p>
+          <input id='scale' type="range" min="130" max="190" step="1" class="slider" />
+        </div>
+      </div>
+      <div class="cardcont">
+        <div class="card">
+          <p>WEIGHT</p>
+          <p class="number" id="weight">40</p>
+          <button class="btn"  id="weightDecrement">-</button> <button class="btn" id="weightIncrement">+</button>
+        </div>
+        <div class="card">
+          <p>AGE</p>
+          <p class="number" id="age">17</p>
+          <button class="btn" id="ageDecrement">-</button> <button class="btn" id="ageIncrement">+</button>
+        </div>
+      </div>
+      <button class="calcbtn" id="calBtn">CALCULATE YOUR BMI</button>
+      
+    </div>
+
+    <div class="result_container">
+      <h2 align="left">Your Result</h2>
+      <div class="result_card">
+
+        <p id="status"></p>
+        <p id="result"></p>
+        <p class="normalRange">Normal BMI range:</p>
+        <p >18.5 - 25 kg/m<sup>2</sup></p>
+
+        <p id="comment"></p>
+
+        <h3 style="color: #f5f0f0; position: absolute; left:40%; letter-spacing:0em;
+        
+        top:auto; font-size:30px; background:transparent">made with <span style='color:rgb(218, 15, 8); background:none'>&#10084;</span> by: &copy;Priyanshu kumar</h3>
+
+      </div>
+
+      <button class="calcbtn" id="recalBtn">RE-CALCULATE YOUR BMI</button>
+     
+    </div>
+
+    <script src="bmi.js"></script>
+    
+    <script>
+        var height = 155;
+var weight = 40;
+var age = 17;
+var gender;
+var bmi;
+var isGenderSelected = false;
+
+var scale = document.querySelector("#scale");
+var user_height = document.querySelector("#height");
+var user_weight = document.querySelector("#weight");
+var user_age = document.querySelector("#age");
+var female_card = document.querySelector(".female");
+var male_card = document.querySelector(".male");
+var cal_btn = document.querySelector("#calBtn");
+var recal_btn = document.querySelector("#recalBtn");
+var comment = document.querySelector("#comment");
+var result = document.querySelector("#result");
+var age_increment_btn = document.querySelector("#ageIncrement");
+var age_decrement_btn = document.querySelector("#ageDecrement");
+var weight_increment_btn = document.querySelector("#weightIncrement");
+var weight_decrement_btn = document.querySelector("#weightDecrement");
+
+cal_btn.disabled = true;
+cal_btn.style.opacity = "0.5";
+
+function calEnable() {
+  if (isGenderSelected) {
+    cal_btn.disabled = false;
+    cal_btn.style.opacity = "1";
+  } else {
+    cal_btn.disabled = true;
+    cal_btn.style.opacity = "0.5";
+  }
+}
+
+function ageIncrement() {
+  age++;
+  user_age.innerHTML = age;
+}
+
+function ageDecrement() {
+  if (age > 0) age--;
+  user_age.innerHTML = age;
+}
+
+function weightIncrement() {
+  weight++;
+  user_weight.innerHTML = weight;
+}
+
+function weightDecrement() {
+  if (weight > 0) weight--;
+  user_weight.innerHTML = weight;
+}
+
+// function bmi(weight, height) {
+//   return (weight / (height * height)) * 10000;
+// }
+
+scale.addEventListener("input", () => (user_height.innerHTML = scale.value));
+
+age_increment_btn.addEventListener("click", ageIncrement);
+age_decrement_btn.addEventListener("click", ageDecrement);
+weight_increment_btn.addEventListener("click", weightIncrement);
+weight_decrement_btn.addEventListener("click", weightDecrement);
+
+male_card.addEventListener("click", () => {
+  gender = "male";
+  isGenderSelected = true;
+  male_card.classList.add("active");
+  female_card.classList.remove("active");
+  calEnable();
+});
+
+female_card.addEventListener("click", () => {
+  gender = "female";
+  isGenderSelected = true;
+  female_card.classList.add("active");
+  male_card.classList.remove("active");
+  calEnable();
+});
+
+cal_btn.addEventListener("click", () => {
+  document.querySelector(".container").style.visibility = "hidden";
+
+  bmi = (weight / (height * height)) * 10000;
+
+  result.innerHTML = bmi.toFixed(1);
+  var status = document.querySelector("#status");
+
+  if (bmi < 18.5) {
+    comment.innerHTML = "You are underweight.";
+    status.innerText = "UNDERWEIGHT";
+  } else if (bmi >= 18.5 && bmi < 25) {
+    comment.innerHTML = "You are at a healthy weight. Good job!";
+    status.innerText = "NORMAL";
+  } else if (bmi > 25 && bmi <= 29.99) {
+    comment.innerHTML = "You are overweight.";
+    status.innerHTML = "OVERWEIGHT";
+  } else {
+    comment.innerHTML = "You are obese.";
+    status.innerText = "OBESE";
+  }
+});
+
+ recal_btn.addEventListener("click", () => {
+  document.querySelector(".container").style.visibility = "";
+});
+    </script>
+ </body>
+</html>
